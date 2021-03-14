@@ -23,7 +23,10 @@ target_include_directories(word_lib
 target_link_libraries(IZ-1 word_lib)
 
 enable_testing()
+include(gtest.cmake)
 find_package(GTest CONFIG REQUIRED)
+find_package (Threads)
+target_link_libraries(gtest ${CMAKE_THREAD_LIBS_INIT})
 add_executable(tests
         ${CMAKE_CURRENT_SOURCE_DIR}/tests/test.cpp
         )
@@ -34,6 +37,5 @@ target_include_directories(tests
         )
 
 target_link_libraries(tests GTest::gtest_main word_lib)
-
 
 
