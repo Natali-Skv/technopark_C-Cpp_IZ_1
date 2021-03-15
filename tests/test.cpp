@@ -9,7 +9,6 @@ extern "C" {
 #define MAX_LEN 256
 #define MAX_LEN_FMT "255"
 #define MAX_NUM_WORDS 256
-#define BUF_SIZE 256
 
 TEST(scanner_word, test1) {
     const char *file_name = "../tests/input_emulator/f1";
@@ -17,16 +16,12 @@ TEST(scanner_word, test1) {
     FILE *fin2 = fopen(file_name, "r");
     ASSERT_FALSE(!fin1 || !fin2);
     char *word_exp = new char[MAX_LEN];
-    char *buf = new char[BUF_SIZE];
-    buf[0] = '\0';
-    int buf_poz = 0;
     char *word_curr = nullptr;
     while (fscanf(fin1, "%" MAX_LEN_FMT "s", word_exp) == 1) {
-        EXPECT_STREQ(word_curr = scanner_word(fin2, buf, &buf_poz, BUF_SIZE, MAX_LEN), word_exp);
+        EXPECT_STREQ(word_curr = scanner_word(fin2, MAX_LEN), word_exp);
         free(word_curr);
     }
     delete[](word_exp);
-    delete[](buf);
     if (fclose(fin1) == EOF) {
         std::cerr << "error of closing file: " << file_name << std::endl;
     };
@@ -41,16 +36,12 @@ TEST(scanner_word, test2) {
     FILE *fin2 = fopen(file_name, "r");
     ASSERT_FALSE(!fin1 || !fin2);
     char *word_exp = new char[MAX_LEN];
-    char *buf = new char[BUF_SIZE];
-    buf[0] = '\0';
-    int buf_poz = 0;
     char *word_curr = nullptr;
     while (fscanf(fin1, "%" MAX_LEN_FMT "s", word_exp) == 1) {
-        EXPECT_STREQ(word_curr = scanner_word(fin2, buf, &buf_poz, BUF_SIZE, MAX_LEN), word_exp);
+        EXPECT_STREQ(word_curr = scanner_word(fin2, MAX_LEN), word_exp);
         free(word_curr);
     }
     delete[](word_exp);
-    delete[](buf);
     if (fclose(fin1) == EOF) {
         std::cerr << "error of closing file: " << file_name << std::endl;
     };
@@ -65,16 +56,12 @@ TEST(scanner_word, test3) {
     FILE *fin2 = fopen(file_name, "r");
     ASSERT_FALSE(!fin1 || !fin2);
     char *word_exp = new char[MAX_LEN];
-    char *buf = new char[BUF_SIZE];
-    buf[0] = '\0';
-    int buf_poz = 0;
     char *word_curr = nullptr;
     while (fscanf(fin1, "%" MAX_LEN_FMT "s", word_exp) == 1) {
-        EXPECT_STREQ(word_curr = scanner_word(fin2, buf, &buf_poz, BUF_SIZE, MAX_LEN), word_exp);
+        EXPECT_STREQ(word_curr = scanner_word(fin2, MAX_LEN), word_exp);
         free(word_curr);
     }
     delete[](word_exp);
-    delete[](buf);
     if (fclose(fin1) == EOF) {
         std::cerr << "error of closing file: " << file_name << std::endl;
     };
@@ -82,6 +69,7 @@ TEST(scanner_word, test3) {
         std::cerr << "error of closing file: " << file_name << std::endl;
     };
 }
+
 
 TEST(scanner_lot_of_words, test1) {
     const char *file_name = "../tests/input_emulator/f1";
@@ -252,6 +240,7 @@ TEST(qsort, test3) {
         std::cerr << "error of closing file: " << file_name << std::endl;
     };
 }
+
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();

@@ -6,8 +6,8 @@
 #define BUF_LEN (256u / sizeof(char))
 #define FMT_SIZE (10)
 
-char *scanner_word(FILE *fin, char *buf, int *buf_poz, int buf_len, int max_len) {
-    if (!fin || (max_len <= 0) || (buf_len <= 0)) {
+char *scanner_word(FILE *fin, int max_len) {
+    if (!fin || (max_len <= 0)) {
         return NULL;
     }
     char *word_buf = malloc((max_len) * sizeof(char));
@@ -17,20 +17,12 @@ char *scanner_word(FILE *fin, char *buf, int *buf_poz, int buf_len, int max_len)
     }
     char format[FMT_SIZE];
     snprintf(format, sizeof(format), "%%%ds", (max_len - 1));
-    if (sscanf(buf + *buf_poz, format, word_buf) != 1) {
-        if (fgets(buf, buf_len, fin)) {
-            if (sscanf(buf, format, word_buf) != 1) {
-                free(word_buf);
-                return NULL;
-            }
-            *buf_poz = 0;
-        } else {
-            free(word_buf);
-            return NULL;
-        }
+    if (fscanf(fin, format, word_buf) != 1) {
+        free(word_buf);
+        return NULL;
     }
+
     int word_len = (int) strlen(word_buf);
-    *buf_poz += word_len;
     char *word = (char *) malloc((word_len + 1) * sizeof(char));
     if (!word) {
         free(word_buf);
@@ -46,19 +38,11 @@ int scanner_lot_of_words(FILE *fin, char *mass_word[], int mass_size, int max_wo
     if (!fin || !mass_word || (mass_size <= 0) || (max_word_len <= 0)) {
         return 0;
     }
-    char *buf = (char *) malloc(BUF_LEN);
-    if (!buf) {
-        perror("malloc() for buf failed" __FILE__);
-        return 0;
-    }
-    buf[0] = '\0';
-    int buf_poz = 0;
     int word_count = 0;
     while ((word_count < mass_size) &&
-           (mass_word[word_count] = scanner_word(fin, buf, &buf_poz, BUF_LEN, max_word_len))) {
+           (mass_word[word_count] = scanner_word(fin,  max_word_len))) {
         ++word_count;
     }
-    free(buf);
     return word_count;
 }
 
@@ -73,7 +57,7 @@ void str_to_lower(char *str) {
     }
 }
 
-void swap(char *v[], size_t i, size_t j) {
+void swap(char *v[], int i, int j) {
     if (!v) {
         return;
     }

@@ -23,9 +23,8 @@ int main() {
 
     q_sort(mass_str, 0, num_strs - 1, strcmp);
 
-    printf("\n");
     for (int i = 0; i < num_strs; ++i) {
-        printf("%d %s\n", i, mass_str[i]);
+        printf("%s\n", mass_str[i]);
     }
     for (int i = 0; i < num_strs; ++i) {
         free(mass_str[i]);

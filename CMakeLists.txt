@@ -33,13 +33,10 @@ add_executable(tests
 
 target_include_directories(tests
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/project/include
-        #${GTEST_INCLUDE_DIRS}
         )
 
-#add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/gtest)
-add_subdirectory(gtest)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/gtest)
 find_package(Threads)
-
 target_link_libraries(tests word_lib gtest ${CMAKE_THREAD_LIBS_INIT})
 
 
