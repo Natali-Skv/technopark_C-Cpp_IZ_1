@@ -1,12 +1,21 @@
-cmake_minimum_required(VERSION 3.4)
-project(IZ-1)
+cmake_minimum_required(VERSION 3.6)
+project(technopark_hw1)
 
 set(CMAKE_C_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-SET(CMAKE_C_FLAGS  "${CMAKE_C_FLAGS}  -Werror -Wall -Wextra")
+set(CMAKE_C_STANDART_REQURED ON)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDART_REQURED ON)
+
+set(CMAKE_CXX_FLAGS "-g -O0 -Wall -fprofile-arcs -ftest-coverage")
+set(CMAKE_C_FLAGS "-g -O0 -Wall -fprofile-arcs -ftest-coverage")
+set(CMAKE_EXE_LINKER_FLAGS "-fprofile-arcs -ftest-coverage")
 
 add_library(word_lib STATIC
         ${CMAKE_CURRENT_SOURCE_DIR}/project/word_lib/word.c
+        )
+
+target_include_directories(word_lib
+        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/project/include
         )
 
 add_executable(IZ-1
@@ -16,26 +25,23 @@ target_include_directories(IZ-1
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/project/include
         )
 
-target_include_directories(word_lib
-        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/project/include
-        )
-
 target_link_libraries(IZ-1 word_lib)
 
-enable_testing()
-include(gtest.cmake)
-find_package(GTest CONFIG REQUIRED)
-find_package (Threads)
-target_link_libraries(gtest ${CMAKE_THREAD_LIBS_INIT})
 add_executable(tests
         ${CMAKE_CURRENT_SOURCE_DIR}/tests/test.cpp
         )
 
 target_include_directories(tests
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/project/include
-        ${GTEST_INCLUDE_DIRS}
+        #${GTEST_INCLUDE_DIRS}
         )
 
-target_link_libraries(tests GTest::gtest_main word_lib)
+#add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/gtest)
+add_subdirectory(gtest)
+find_package(Threads)
+
+target_link_libraries(tests word_lib gtest ${CMAKE_THREAD_LIBS_INIT})
+
+
 
 

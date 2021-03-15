@@ -252,3 +252,7 @@ TEST(qsort, test3) {
         std::cerr << "error of closing file: " << file_name << std::endl;
     };
 }
+int main(int argc, char **argv) {
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
+}

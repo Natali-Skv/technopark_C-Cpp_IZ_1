@@ -1,30 +1,49 @@
-dist: trusty
-sudo: required
-
 language: c
 
-os:
-    - linux
-
-compiler:
-    - gcc
-
 addons:
-    apt:
-        packages:
-            - cmake
-            - valgrind
-            - cppcheck
+  apt:
+    packages:
+      - cmake
+      - valgrind
+      - lcov
 
 before_script:
-    - sudo apt-get install -y libgtest-dev
-    - cd /usr/src/gtest
-    - sudo cmake CMakeLists.txt && sudo make
-    - sudo cp *.a /usr/lib
-    - cd "${TRAVIS_BUILD_DIR}"
-    - cmake .
-    - make
+  - mkdir cmake-build-debug
+  - cd cmake-build-debug
+  - cmake ../
+  - make
 
-script:
-    - valgrind --track-origins=yes --leak-check=full ./tests
-    - cppcheck --enable=warning,performance,portability,style --language=c++ ./project
+jobs:
+  include:
+
+    - stage: tests
+      name: "Check tests"
+      script:
+        - ./tests
+
+    - stage: coverage
+      name: "Test coverage"
+      script:
+        - ./tests
+        - cd CMakeFiles/test.dir/tests
+        - gcov tests.cpp.gcno
+        - lcov --capture --directory ../../ --output-file tests.info
+        - genhtml -o ../../../../coverage-report tests.info
+        - cd ../../../
+
+    - stage: memcheck
+      name: "Memory check"
+      script:
+        - valgrind --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no ./test
+
+    - stage: static_analysis
+      name: "Static analysis"
+      script:
+        - cd ..
+        - ./cppcheck/cppcheck --enable=all --error-exitcode=1 --inconclusive include/* src/* tests/*
+
+    - stage: linters
+      name: "Linters"
+      script:
+        - python2.7 ../cpplint/cpplint.py --extensions=c include/* src/* tests/*
+        - python2.7 ../cpplint/cpplint.py --extensions=c++ tests/*
