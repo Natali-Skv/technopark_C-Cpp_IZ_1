@@ -12,7 +12,7 @@ extern "C" {
 #define BUF_SIZE 256
 
 TEST(scanner_word, test1) {
-    const char *file_name = "f1";
+    const char *file_name = "../tests/input_emulator/f1";
     FILE *fin1 = fopen(file_name, "r");
     FILE *fin2 = fopen(file_name, "r");
     ASSERT_FALSE(!fin1 || !fin2);
@@ -36,7 +36,7 @@ TEST(scanner_word, test1) {
 }
 
 TEST(scanner_word, test2) {
-    const char *file_name = "f2";
+    const char *file_name = "../tests/input_emulator/f2";
     FILE *fin1 = fopen(file_name, "r");
     FILE *fin2 = fopen(file_name, "r");
     ASSERT_FALSE(!fin1 || !fin2);
@@ -60,7 +60,7 @@ TEST(scanner_word, test2) {
 }
 
 TEST(scanner_word, test3) {
-    const char *file_name = "f3";
+    const char *file_name = "../tests/input_emulator/f3";
     FILE *fin1 = fopen(file_name, "r");
     FILE *fin2 = fopen(file_name, "r");
     ASSERT_FALSE(!fin1 || !fin2);
@@ -84,7 +84,7 @@ TEST(scanner_word, test3) {
 }
 
 TEST(scanner_lot_of_words, test1) {
-    const char *file_name = "f1";
+    const char *file_name = "../tests/input_emulator/f1";
     FILE *fin1 = fopen(file_name, "r");
     FILE *fin2 = fopen(file_name, "r");
     ASSERT_FALSE(!fin1 || !fin2);
@@ -113,7 +113,7 @@ TEST(scanner_lot_of_words, test1) {
 
 
 TEST(scanner_lot_of_words, test2) {
-    const char *file_name = "f2";
+    const char *file_name = "../tests/input_emulator/f2";
     FILE *fin1 = fopen(file_name, "r");
     FILE *fin2 = fopen(file_name, "r");
     char *str_exp = new char[MAX_LEN];
@@ -140,7 +140,7 @@ TEST(scanner_lot_of_words, test2) {
     };
 }
 TEST(scanner_lot_of_words, test3) {
-    const char *file_name = "f3";
+    const char *file_name = "../tests/input_emulator/f3";
     FILE *fin1 = fopen(file_name, "r");
     FILE *fin2 = fopen(file_name, "r");
     char *str_exp = new char[MAX_LEN];
@@ -191,7 +191,7 @@ TEST(str_to_lower, test1) {
 }
 
 TEST(qsort, test1) {
-    const char *file_name = "f1";
+    const char *file_name = "../tests/input_emulator/f1";
     FILE *fin = fopen(file_name, "r");
     ASSERT_FALSE(!fin);
     char **mass_strs = new char *[MAX_NUM_WORDS];
@@ -212,7 +212,7 @@ TEST(qsort, test1) {
 }
 
 TEST(qsort, test2) {
-    const char *file_name = "f2";
+    const char *file_name = "../tests/input_emulator/f2";
     FILE *fin = fopen(file_name, "r");
     ASSERT_FALSE(!fin);
     char **mass_strs = new char *[MAX_NUM_WORDS];
@@ -233,7 +233,7 @@ TEST(qsort, test2) {
 }
 
 TEST(qsort, test3) {
-    const char *file_name = "f3";
+    const char *file_name = "../tests/input_emulator/f3";
     FILE *fin = fopen(file_name, "r");
     ASSERT_FALSE(!fin);
     char **mass_strs = new char *[MAX_NUM_WORDS];

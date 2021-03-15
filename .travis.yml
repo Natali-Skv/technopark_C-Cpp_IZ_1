@@ -12,6 +12,7 @@ before_script:
   - cd cmake-build-debug
   - cmake ../
   - make
+  -
 
 jobs:
   include:
@@ -25,7 +26,7 @@ jobs:
       name: "Test coverage"
       script:
         - ./tests
-        - cd CMakeFiles/test.dir/tests
+        - cd CMakeFiles/tests.dir/tests
         - gcov tests.cpp.gcno
         - lcov --capture --directory ../../ --output-file tests.info
         - genhtml -o ../../../../coverage-report tests.info
@@ -34,16 +35,17 @@ jobs:
     - stage: memcheck
       name: "Memory check"
       script:
-        - valgrind --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no ./test
+        - valgrind --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no ./tests
 
     - stage: static_analysis
       name: "Static analysis"
       script:
         - cd ..
-        - ./cppcheck/cppcheck --enable=all --error-exitcode=1 --inconclusive include/* src/* tests/*
+        - linters/cppcheck/cppcheck  project --enable=all --error-exitcode=1 -I project/include --suppress=missingIncludeSystem -i project/tests
+        #- linters/cppcheck/cppcheck --enable=all --error-exitcode=1 --inconclusive include/* src/* tests/*
 
     - stage: linters
       name: "Linters"
       script:
-        - python2.7 ../cpplint/cpplint.py --extensions=c include/* src/* tests/*
-        - python2.7 ../cpplint/cpplint.py --extensions=c++ tests/*
+        - python2.7 ../linters/cpplint/cpplint.py --extensions=c include/* src/* tests/*
+        - python2.7 ../linters/cpplint/cpplint.py --extensions=c++ tests/*
